@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+
+	<EditText
+		android:hint="手机号"
+		android:id="@+id/phone"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"/>
+
+	<EditText
+		android:hint="验证码"
+		android:id="@+id/cap"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"/>
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:orientation="horizontal"
+		android:layout_gravity="center_horizontal">
+
+		<Button
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="登录"
+			android:id="@+id/login"/>
+
+		<Button
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="获取验证码"
+			android:id="@+id/get_cap"/>
+
+	</LinearLayout>
+
+</LinearLayout>
+
