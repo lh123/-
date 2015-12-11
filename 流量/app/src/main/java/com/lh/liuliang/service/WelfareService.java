@@ -1,20 +1,17 @@
 package com.lh.liuliang.service;
 import android.app.*;
 import android.content.*;
+import android.net.wifi.*;
 import android.os.*;
+import android.util.*;
 import android.widget.*;
 import com.lh.liuliang.*;
 import com.lh.liuliang.model.*;
 import com.lh.liuliang.preference.*;
 import com.lh.liuliang.ui.*;
 import com.lh.liuliang.user.*;
-import java.util.*;
 import org.json.*;
-import android.net.wifi.*;
-import android.net.wifi.WifiManager.*;
-import android.app.Notification.*;
-import com.lh.liuliang.presenter.*;
-import android.util.*;
+import android.net.*;
 
 public class WelfareService extends Service
 {
@@ -168,10 +165,12 @@ public class WelfareService extends Service
 		if (info.getSessionID() == null)
 		{
 			Intent i=new Intent();
+			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			i.setClass(this, LoginActivity.class);
 			startActivity(i);
 			Toast.makeText(this, "请先登录", Toast.LENGTH_SHORT).show();
 			isGrabWelfare = false;
+			releaseLockAndStop();
 			return;
 		}
 		showNotification(null, FLAG_SERVICE_RUNNING_AND_GRABING);
@@ -200,7 +199,7 @@ public class WelfareService extends Service
 		{
 			Log("登录失败");
 			showNotification("登录失败", FLAG_WELFARE_RESULT);
-			releaseLock();
+			releaseLockAndStop();
 			return;
 		}
 		Log("开始登录");
@@ -254,7 +253,7 @@ public class WelfareService extends Service
 										{
 											Log("登录失败");
 											showNotification("登录失败", FLAG_WELFARE_RESULT);
-											releaseLock();
+											releaseLockAndStop();
 										}
 									});
 							}
@@ -266,7 +265,7 @@ public class WelfareService extends Service
 			});
 	}
 
-	private void releaseLock()
+	private void releaseLockAndStop()
 	{
 		if (lock != null && lock.isHeld())
 		{
@@ -316,7 +315,7 @@ public class WelfareService extends Service
 							isGrabWelfare = false;
 							Log("抢到红包");
 							showNotification(json.optString("msg"), FLAG_WELFARE_RESULT);
-							releaseLock();
+							releaseLockAndStop();
 						}
 						else if ("001".equals(code))
 						{
@@ -324,19 +323,19 @@ public class WelfareService extends Service
 							UserInfo.getUserInfo().setCookie(null);
 							DataPre.getInstance().saveCookie(null);
 							showNotification("请重新登录", FLAG_WELFARE_RESULT);
-							releaseLock();
+							releaseLockAndStop();
 						}
 						else if ("003".equals(code))
 						{
 							isGrabWelfare = false;
 							showNotification("每天只能抢一次红包～(￣▽￣～)~?", FLAG_WELFARE_RESULT);
-							releaseLock();
+							releaseLockAndStop();
 						}
 						else if ("004".equals(code))
 						{
 							isGrabWelfare = false;
 							showNotification("没抢到红包", FLAG_WELFARE_RESULT);
-							releaseLock();
+							releaseLockAndStop();
 						}
 						else
 						{
@@ -366,7 +365,7 @@ public class WelfareService extends Service
 							{
 								isGrabWelfare = false;
 								showNotification("没抢到红包", FLAG_WELFARE_RESULT);
-								releaseLock();
+								releaseLockAndStop();
 							}
 						}
 					}

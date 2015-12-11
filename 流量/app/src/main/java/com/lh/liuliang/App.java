@@ -1,12 +1,11 @@
 package com.lh.liuliang;
 import android.app.*;
-import com.lh.liuliang.preference.*;
-import com.tencent.bugly.crashreport.*;
-import com.tencent.bugly.crashreport.common.strategy.*;
 import com.lh.liuliang.crash.*;
+import com.lh.liuliang.preference.*;
+import com.lh.liuliang.user.*;
+import com.tencent.bugly.crashreport.*;
 import com.umeng.analytics.*;
 import com.umeng.update.*;
-import com.lh.liuliang.user.*;
 
 public class App extends Application
 {

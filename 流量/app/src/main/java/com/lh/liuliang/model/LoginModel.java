@@ -47,8 +47,9 @@ public class LoginModel
 			});
 	}
 	
-	public void loginWithCap(final String phone,final String cap,final MessCallBack callBack)
+	public void loginWithCap(String phone,final String cap,final MessCallBack callBack)
 	{
+		UserInfo.getUserInfo().setPhone(phone);
 		ThreadManager.getInstance().startThread(new Runnable(){
 
 				@Override

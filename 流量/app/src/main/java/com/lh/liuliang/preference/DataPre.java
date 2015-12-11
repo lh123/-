@@ -36,7 +36,7 @@ public class DataPre
 	public String getPhoneNum()
 	{
 		SharedPreferences sp=mContext.getSharedPreferences("data",mContext.MODE_PRIVATE);
-		return sp.getString("phone","未知");
+		return sp.getString("phone","");
 	}
 	
 	public void saveSeasonsID(String id)
