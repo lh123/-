@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical">
+
+	<include
+		layout="@layout/toolbar"/>
+
+	<RelativeLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent">
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="wrap_content"
+			android:id="@+id/tv_phone"/>
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="wrap_content"
+			android:layout_below="@id/tv_phone"
+			android:id="@+id/tv_login_status"/>
+
+		<Button
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="登录"
+			android:layout_alignParentRight="true"
+			android:id="@+id/btn_login"/>
+
+		<Button
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="重试"
+			android:layout_toRightOf="@id/tv_phone"
+			android:id="@+id/btn_login_retry"
+			android:visibility="invisible"/>
+
+		<ProgressBar
+			android:layout_height="25dp"
+			android:layout_width="25dp"
+			android:layout_toRightOf="@id/tv_phone"
+			android:layout_alignTop="@id/tv_login_status"
+			android:id="@+id/pb_login_status"/>
+
+	</RelativeLayout>
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="horizontal"
+		android:layout_marginTop="10dp">
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="流量情况:"
+			android:id="@+id/tv_flux_detail"
+			android:layout_gravity="center_vertical"/>
+
+		<FrameLayout
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content">
+
+			<Button
+				style="?android:attr/buttonBarButtonStyle"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:text="刷新"
+				android:enabled="false"
+				android:id="@+id/btn_refresh_flux"/>
+
+			<ProgressBar
+				android:layout_height="25dp"
+				android:layout_width="25dp"
+				android:layout_gravity="center"
+				android:id="@+id/pb_refresh_flux"
+				android:visibility="invisible"/>
+
+		</FrameLayout>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="horizontal">
+
+		<ProgressBar
+			style="?android:attr/progressBarStyleHorizontal"
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:layout_gravity="center_vertical"
+			android:layout_weight="1.0"
+			android:id="@+id/pb_flux"/>
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:id="@+id/tv_flux"
+			android:minWidth="20dp"
+			android:layout_marginLeft="1dp"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="horizontal"
+		android:layout_marginTop="10dp">
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="红包状态:"
+			android:id="@+id/tv_welfare_status"
+			android:layout_gravity="center_vertical"
+			android:maxEms="18"/>
+
+		<FrameLayout
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content">
+
+			<Button
+				style="?android:attr/buttonBarButtonStyle"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:text="刷新"
+				android:enabled="false"
+				android:id="@+id/btn_refresh_welfare"/>
+
+			<ProgressBar
+				android:layout_height="25dp"
+				android:layout_width="25dp"
+				android:layout_gravity="center"
+				android:id="@+id/pb_refresh_welfare"
+				android:visibility="invisible"/>
+
+		</FrameLayout>
+
+	</LinearLayout>
+
+	<TextView
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:text="下轮时间:"
+		android:id="@+id/tv_next_time"/>
+
+	<TextView
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:text="类型:"
+		android:id="@+id/tv_welfare_type"/>
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:orientation="horizontal"
+		android:layout_gravity="center_horizontal">
+
+		<Button
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="抢"
+			android:enabled="false"
+			android:id="@+id/btn_grab"/>
+
+		<Button
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="历史"
+			android:enabled="false"
+			android:id="@+id/btn_welfare_record"/>
+
+		<Button
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="自动抢红包"
+			android:id="@+id/btn_auto_grab_welfare"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:orientation="horizontal">
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="wrap_content"
+			android:id="@+id/tv_welfare_service_status"/>
+
+		<ProgressBar
+			android:layout_height="20dp"
+			android:layout_width="20dp"
+			android:layout_gravity="center_vertical"
+			android:id="@+id/pb_welfare_service_status"
+			android:visibility="invisible"/>
+
+	</LinearLayout>
+
+</LinearLayout>
+

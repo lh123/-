@@ -11,7 +11,9 @@ import com.lh.liuliang.preference.*;
 import com.lh.liuliang.ui.*;
 import com.lh.liuliang.user.*;
 import org.json.*;
-import android.net.*;
+import com.lh.liuliang.crash.*;
+import com.lh.liuliang.service.WelfareService.*;
+import java.lang.ref.*;
 
 public class WelfareService extends Service
 {
@@ -23,7 +25,7 @@ public class WelfareService extends Service
 	private long intervalTime=2000,actTime;
 	private int loginTimes=3;
 
-	private static boolean isAlive=false;
+	public static boolean isAlive=false;
 	private boolean isGrabWelfare=false;
 	private boolean isBind=false;
 	private PowerManager.WakeLock lock;
@@ -35,9 +37,12 @@ public class WelfareService extends Service
 	public static final int FLAG_WELFARE_RESULT=2;
 	public static final String LOCK_TAG="auto_grab_welfare";
 
+	private WelfareBind welfareBind;
+
 	@Override
 	public void onCreate()
 	{
+		super.onCreate();
 		Log("service creat");
 		PowerManager pw=(PowerManager) getSystemService(POWER_SERVICE);
 		WifiManager wm=(WifiManager) getSystemService(WIFI_SERVICE);
@@ -50,7 +55,6 @@ public class WelfareService extends Service
 		wlock.acquire();
 		showNotification(null, FLAG_SERVICE_RUNNING);
 		Log("lock cpu wifi");
-		super.onCreate();
 		isAlive = true;
 		info = UserInfo.getUserInfo();
 		mModel = new MainModel();
@@ -60,6 +64,8 @@ public class WelfareService extends Service
 	@Override
 	public void onDestroy()
 	{
+		back=null;
+		//welfareBind.mService=null;
 		isAlive = false;
 		stopForeground(true);
 		if (lock != null && lock.isHeld())
@@ -77,6 +83,7 @@ public class WelfareService extends Service
 		mHandler.removeCallbacksAndMessages(null);
 		Log("service destory");
 		super.onDestroy();
+		App.getWacther(this).watch(this);
 	}
 
 	public static boolean isAlive()
@@ -115,7 +122,8 @@ public class WelfareService extends Service
 	{
 		Log("bind service");
 		isBind = true;
-		return new WelfareBind(this);
+		welfareBind = new WelfareBind(new WeakReference<WelfareService>(this));
+		return welfareBind;
 	}
 
 	@Override
@@ -322,8 +330,10 @@ public class WelfareService extends Service
 							isGrabWelfare = false;
 							UserInfo.getUserInfo().setCookie(null);
 							DataPre.getInstance().saveCookie(null);
-							showNotification("请重新登录", FLAG_WELFARE_RESULT);
-							releaseLockAndStop();
+							showNotification("正在重新登录", FLAG_WELFARE_RESULT);
+							//releaseLockAndStop();
+							loginTimes--;
+							GrabWelfareWithLogin();
 						}
 						else if ("003".equals(code))
 						{
@@ -411,7 +421,9 @@ public class WelfareService extends Service
 
 	private void Log(String msg)
 	{
-		Log.i("WelfareService", msg);
+		//Log.i("WelfareService", msg);
+		LogUtil.getInstance().logE("WelfareService",msg);
+		
 	}
 
 	private void stopWelfareService()
@@ -430,16 +442,16 @@ public class WelfareService extends Service
 		}
 	}
 
-	public class WelfareBind extends Binder
+	public static class WelfareBind extends Binder
 	{
-		private WelfareService mService;
+		private WeakReference<WelfareService> mService;
 
-		public WelfareBind(WelfareService mService)
+		public WelfareBind(WeakReference<WelfareService> mService)
 		{
 			this.mService = mService;
 		}
 
-		public WelfareService getService()
+		public WeakReference<WelfareService> getService()
 		{
 			return mService;
 		}

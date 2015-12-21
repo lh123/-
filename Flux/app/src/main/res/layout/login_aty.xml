@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical"
+	android:gravity="center_horizontal">
+
+	<include
+		layout="@layout/toolbar"/>
+
+	<EditText
+		android:layout_height="wrap_content"
+		android:inputType="phone"
+		android:layout_width="wrap_content"
+		android:ems="10"
+		android:id="@+id/login_ed_phone"
+		android:hint="电话号码"/>
+
+	<EditText
+		android:layout_height="wrap_content"
+		android:inputType="number"
+		android:layout_width="wrap_content"
+		android:ems="10"
+		android:id="@+id/login_ed_cap"
+		android:hint="验证码"/>
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:orientation="horizontal">
+
+		<Button
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="登录"
+			android:id="@+id/login_btn_login"/>
+
+		<Button
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="获取验证码"
+			android:id="@+id/login_btn_get_cap"/>
+
+	</LinearLayout>
+
+</LinearLayout>
+

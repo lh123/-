@@ -301,20 +301,20 @@ public class MainPresenter implements ServiceConnection
 					ca.set(Calendar.MILLISECOND,0);
 					if(ca.getTimeInMillis()<=System.currentTimeMillis())
 					{
-						mMain.showToast("时间不能小于当前时间");
-						return;
+						mMain.showToast("时间设定为明天");
+						ca.add(Calendar.DAY_OF_MONTH,1);
 					}
 					Intent si=new Intent();
 					si.putExtra("auto",true);
-					si.putExtra("dur",(long)3*60*1000);
+					si.putExtra("dur",(long)5*60*1000);
 					si.putExtra("act",ca.getTimeInMillis());
 					si.setClass(mMain.getApplicationContext(),WelfareService.class);
 					PendingIntent pi=PendingIntent.getService(mMain.getApplicationContext(),0,si,PendingIntent.FLAG_UPDATE_CURRENT);
 					am.cancel(pi);
 					am.set(AlarmManager.RTC_WAKEUP,ca.getTimeInMillis()-3*60*1000,pi);
 					SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-					mMain.setWelfareServiceStatus("自动抢红包:"+df.format(ca.getTime()));
-					DataPre.getInstance().saveAutoGrabWelfareStatus("自动抢红包:"+df.format(ca.getTime()));
+					mMain.setWelfareServiceStatus("自动抢红包:"+df.format(ca.getTime())+"提前5分钟启动服务");
+					DataPre.getInstance().saveAutoGrabWelfareStatus("自动抢红包:"+df.format(ca.getTime())+"提前5分钟启动服务");
 				}
 			}, ca.get(Calendar.HOUR_OF_DAY), ca.get(Calendar.MINUTE), true);
 			dialog.show();
@@ -396,7 +396,7 @@ public class MainPresenter implements ServiceConnection
 	@Override
 	public void onServiceConnected(ComponentName p1, IBinder p2)
 	{
-		mService=((WelfareService.WelfareBind)p2).getService();
+		mService=((WelfareService.WelfareBind)p2).getService().get();
 		mService.setCallBack(new WelfareService.GrabWelfareStatus(){
 
 				@Override

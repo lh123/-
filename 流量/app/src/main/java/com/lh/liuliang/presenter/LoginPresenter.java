@@ -33,7 +33,14 @@ public class LoginPresenter
 				{
 					if(info==null)
 					{
-						mLogin.showToast("未知错误");
+						mHandler.post(new Runnable(){
+
+								@Override
+								public void run()
+								{
+									mLogin.showToast("未知错误");
+								}
+							});	
 						return;
 					}
 					try

@@ -6,6 +6,7 @@ import java.util.*;
 import org.json.*;
 import com.tencent.bugly.crashreport.*;
 import com.lh.liuliang.threadpool.*;
+import com.lh.liuliang.crash.*;
 
 public class MainModel
 {
@@ -56,7 +57,7 @@ public class MainModel
 					{}
 					catch (IOException e)
 					{
-						e.printStackTrace();
+						LogUtil.getInstance().logE("MainModel",e);
 					}
 					if (back != null)
 					{
@@ -106,7 +107,7 @@ public class MainModel
 					{}
 					catch (IOException e)
 					{
-						e.printStackTrace();
+						LogUtil.getInstance().logE("MainModel",e);
 					}
 					if (back != null)
 					{
@@ -146,7 +147,7 @@ public class MainModel
 					{}
 					catch (IOException e)
 					{
-						e.printStackTrace();
+						LogUtil.getInstance().logE("MainModel",e);
 					}
 					if (back != null)
 					{
@@ -195,7 +196,7 @@ public class MainModel
 					{}
 					catch (IOException e)
 					{
-						e.printStackTrace();
+						LogUtil.getInstance().logE("MainModel",e);
 						//CrashReport.postCatchedException(e);
 					}
 					if (back != null)
@@ -248,7 +249,7 @@ public class MainModel
 					}
 					catch (IOException e)
 					{
-						e.printStackTrace();
+						LogUtil.getInstance().logE("MainModel",e);
 					}
 					if (callBack != null)
 					{

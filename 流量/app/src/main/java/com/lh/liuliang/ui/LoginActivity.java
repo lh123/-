@@ -8,6 +8,7 @@ import android.view.View.*;
 import android.view.*;
 import android.content.*;
 import com.umeng.analytics.*;
+import android.preference.*;
 
 public class LoginActivity extends Activity implements ILoginActivity
 {
