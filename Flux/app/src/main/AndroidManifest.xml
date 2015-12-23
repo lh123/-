@@ -10,7 +10,7 @@
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 	<uses-permission android:name="android.permission.WAKE_LOCK"/>
 	<uses-permission android:name="android.permission.DEVICE_POWER"/>
-	
+		
     <application
         android:allowBackup="true"
 		android:name=".FluxApp"
@@ -37,9 +37,23 @@
 			android:name=".view.WelfareRecordActivity"
 			android:label="历史记录">
 		</activity>
+		<activity
+			android:name=".crash.CrashActivity"
+			android:label="程序崩溃了"
+			android:theme="@style/CrashDialog"/>
 		<service
 			android:name=".service.WelfareService">
 		</service>
+		<meta-data android:value="565c8e8ae0f55a24cc0012fb" android:name="UMENG_APPKEY"/>
+		<meta-data android:value="lh" android:name="UMENG_CHANNEL"/>
+		<service
+			android:name="com.umeng.update.net.DownloadingService"
+			android:process=":DownloadingService" >
+		</service>
+		<activity 
+			android:name="com.umeng.update.UpdateDialogActivity"
+			android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+		</activity>
     </application>
 
 </manifest>

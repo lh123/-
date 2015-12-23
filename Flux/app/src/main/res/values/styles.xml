@@ -9,4 +9,6 @@
 	
     <style name="AppTheme" parent="BaseTheme">
 	</style>
+	<style name="CrashDialog" parent="Base.Theme.AppCompat.Light.Dialog">
+	</style>
 </resources>

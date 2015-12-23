@@ -4,16 +4,18 @@ import android.content.*;
 import android.os.*;
 import android.preference.*;
 import android.widget.*;
+import com.lh.flux.crash.*;
 import com.lh.flux.domain.*;
 import com.lh.flux.domain.event.*;
 import com.lh.flux.mvp.view.*;
 import com.lh.flux.service.*;
 import com.lh.flux.view.*;
 import com.squareup.otto.*;
+import com.umeng.update.*;
 import java.lang.ref.*;
 import java.text.*;
 import java.util.*;
-import com.lh.flux.crash.*;
+import android.app.ActivityManager.*;
 
 public class FluxPresenter
 {
@@ -22,11 +24,9 @@ public class FluxPresenter
 	private WelfareUsecase mWelfareUsecase;
 	private FluxUsecase mFluxUsecase;
 	private Handler mHandler;
-	private WeakReference<WelfareService> mService;
 	private SharedPreferences sp;
 
 	private boolean isNeedRefreshWelfareInfo=false;
-	private boolean isNeedGrabWelfare=false;
 
 	public FluxPresenter(IFluxActivity mFluxActivity)
 	{
@@ -42,6 +42,7 @@ public class FluxPresenter
 		mFluxUsecase = new FluxUsecase(mHandler);
 		sp = mFluxActivity.getContext().getSharedPreferences("auto_grab", Context.MODE_PRIVATE);
 		mFluxActivity.setPhoneNum(FluxUserManager.getInstance().getUser().getPhone());
+		UmengUpdateAgent.update(mFluxActivity.getContext());
 		if (sp.contains("time"))
 		{
 			mFluxActivity.setWelfareServiceStatus(sp.getString("time", ""), false);
@@ -86,21 +87,10 @@ public class FluxPresenter
 
 	public void startGrabWelfare()
 	{
-		if (!WelfareService.isAlive || mService == null || mService.get() == null)
-		{
-			Intent i=new Intent();
-			i.setClass(mFluxActivity.getContext().getApplicationContext(), WelfareService.class);
-			mFluxActivity.getContext().getApplicationContext().startService(i);
-			isNeedGrabWelfare = true;
-		}
-		else if (!mService.get().isGrabWelfare())
-		{
-			mService.get().startAutoGrab();
-		}
-		else
-		{
-			mFluxActivity.showToast("已经再抢红包啦");
-		}
+		Intent i=new Intent();
+		i.setClass(mFluxActivity.getContext().getApplicationContext(), WelfareService.class);
+		i.putExtra("mode", WelfareService.START_GRAB);
+		mFluxActivity.getContext().getApplicationContext().startService(i);
 	}
 
 	public void startLogin()
@@ -151,7 +141,7 @@ public class FluxPresenter
 						ca.add(Calendar.DAY_OF_MONTH, 1);
 					}
 					Intent si=new Intent();
-					si.putExtra("auto", true);
+					si.putExtra("mode", WelfareService.START_GRAB_DELY);
 					si.putExtra("act", ca.getTimeInMillis());
 					si.setClass(mFluxActivity.getContext().getApplicationContext(), WelfareService.class);
 					PendingIntent pi=PendingIntent.getService(mFluxActivity.getContext().getApplicationContext(), 0, si, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -160,11 +150,22 @@ public class FluxPresenter
 					SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					//System.out.println(new Date(ca.getTimeInMillis() - advanceTime));
 					mFluxActivity.setWelfareServiceStatus("自动抢红包:" + df.format(ca.getTime()), false);
-					LogUtil.getInstance().logE("FluxPresenter","auto grab " + df.format(ca.getTime()));
+					LogUtil.getInstance().logE("FluxPresenter", "auto grab " + df.format(ca.getTime()));
 					sp.edit().putString("time", "自动抢红包:" + df.format(ca.getTime())).commit();
 				}
 			}, ca.get(Calendar.HOUR_OF_DAY), ca.get(Calendar.MINUTE), true);
 		dialog.show();
+	}
+
+	public void stopWelfareService()
+	{
+		if (isWelfareServiceRunning())
+		{
+			Intent i=new Intent();
+			i.setClass(mFluxActivity.getContext().getApplicationContext(), WelfareService.class);
+			i.putExtra("mode", WelfareService.STOP_SERVICE);
+			mFluxActivity.getContext().getApplicationContext().startService(i);
+		}
 	}
 
 	@Subscribe
@@ -213,7 +214,7 @@ public class FluxPresenter
 	{
 		if (event.isSuccess())
 		{
-			mFluxActivity.setLoginStatus(event.getData().isSuccess()?mFluxActivity.LOGIN_SUCCESS:mFluxActivity.LOGIN_FAIL);
+			mFluxActivity.setLoginStatus(event.getData().isSuccess() ?mFluxActivity.LOGIN_SUCCESS: mFluxActivity.LOGIN_FAIL);
 			FluxUserManager.getInstance().getUser().setIsLogin(event.getData().isSuccess());
 			if (event.getData().isSuccess())
 			{
@@ -230,7 +231,7 @@ public class FluxPresenter
 		}
 		else
 		{
-			mFluxActivity.setLoginStatus(event.isSuccess()?mFluxActivity.LOGIN_SUCCESS:mFluxActivity.LOGIN_FAIL);
+			mFluxActivity.setLoginStatus(event.isSuccess() ?mFluxActivity.LOGIN_SUCCESS: mFluxActivity.LOGIN_FAIL);
 			mFluxActivity.showToast("未知错误");
 		}
 	}
@@ -268,15 +269,20 @@ public class FluxPresenter
 		mFluxActivity.setWelfareServiceStatus(event.getMsg(), event.isGrabing());
 	}
 
-	@Subscribe
-	public void onWelfareServiceCreatEventReceive(WelfareServiceCreatEvent event)
+	private boolean isWelfareServiceRunning()
 	{
-		this.mService = event.getService();
-		if (isNeedGrabWelfare)
+		boolean isRunning=false;
+		ActivityManager am=(ActivityManager) mFluxActivity.getContext().getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+		List<ActivityManager.RunningServiceInfo> list=am.getRunningServices(Integer.MAX_VALUE);
+		for (int i=0;i < list.size();i++)
 		{
-			isNeedGrabWelfare = false;
-			mService.get().startAutoGrab();
+			if (WelfareService.class.getName().equals(list.get(i).service.getClassName()))
+			{
+				isRunning = true;
+				break;
+			}
 		}
+		return isRunning;
 	}
 
 	public void onDestroy()
@@ -286,9 +292,6 @@ public class FluxPresenter
 		mLoginUsecase.onDestroy();
 		mWelfareUsecase.onDestroy();
 		mFluxUsecase.onDestroy();
-		if (mService != null && mService.get() != null)
-		{
-			mService.get().stopSelf();
-		}
+		stopWelfareService();
 	}
 }

@@ -1,33 +1,36 @@
-package com.lh.liuliang.crash;
-import android.content.*;
+package com.lh.flux.crash;
 import android.app.*;
+import android.content.*;
+import com.umeng.analytics.*;
 
-public class CrashHandler implements Thread.UncaughtExceptionHandler
+public class MyCrashHandler implements Thread.UncaughtExceptionHandler
 {
-	private static CrashHandler handler=new CrashHandler();
-	
+	private static final MyCrashHandler handler=new MyCrashHandler();
+
 	private Context mContext;
 	private Thread.UncaughtExceptionHandler mDefaultHandler;
 
-	private CrashHandler(){}
-	
-	public static CrashHandler getInstance()
+	private MyCrashHandler(){}
+
+	public static MyCrashHandler getInstance()
 	{
 		return handler;
 	}
-	
+
 	public void init(Context context)
 	{
 		mDefaultHandler=Thread.getDefaultUncaughtExceptionHandler();
 		mContext=context;
 	}
-	
+
 	@Override
 	public void uncaughtException(Thread p1, Throwable p2)
 	{
+		p2.printStackTrace();
+		MobclickAgent.reportError(mContext.getApplicationContext(),p2);
 		Intent i=new Intent();
 		i.setClass(mContext,CrashActivity.class);
-		i.setFlags(I);
+		i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 		i.putExtra("error",p2);
 		PendingIntent pi=PendingIntent.getActivity(mContext,0,i,PendingIntent.FLAG_UPDATE_CURRENT);
 		AlarmManager am=(AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);

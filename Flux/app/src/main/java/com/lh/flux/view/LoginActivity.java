@@ -10,6 +10,7 @@ import com.lh.flux.*;
 import com.lh.flux.mvp.presenter.*;
 import com.lh.flux.mvp.view.*;
 import android.support.v7.widget.Toolbar;
+import com.umeng.analytics.*;
 
 public class LoginActivity extends AppCompatActivity implements ILoginActivity
 {
@@ -49,6 +50,20 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity
 	}
 
 	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
+
+	@Override
 	protected void onDestroy()
 	{
 		presenter.onDestroy();
@@ -58,7 +73,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity
 	@Override
 	public void showToast(String msg)
 	{
-		Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
 	}
 
 	@Override

@@ -6,14 +6,11 @@ import com.lh.flux.domain.*;
 import com.squareup.leakcanary.*;
 import java.lang.reflect.*;
 import android.os.*;
+import com.tencent.bugly.crashreport.*;
+import com.umeng.analytics.*;
 
 public class FluxApp extends Application
 {
-	public static RefWatcher getRefWatcher(Context context) {
-        FluxApp application = (FluxApp) context.getApplicationContext();
-        return application.refWatcher;
-    }
-
     private RefWatcher refWatcher;
 	
 	@Override
@@ -24,8 +21,18 @@ public class FluxApp extends Application
 		refWatcher = LeakCanary.install(this);
 		FluxUserManager.getInstance().init(this);
 		LogUtil.getInstance().init(this);
+		MyCrashHandler.getInstance().init(this);
+		Thread.setDefaultUncaughtExceptionHandler(MyCrashHandler.getInstance());
+		MobclickAgent.setCatchUncaughtExceptions(false);
+		CrashReport.initCrashReport(this,"900014048",false);
 	}
 
+	public static RefWatcher getRefWatcher(Context context)
+	{
+        FluxApp application = (FluxApp) context.getApplicationContext();
+        return application.refWatcher;
+    }
+	
 	private void trySolveLeak()
 	{
 		try

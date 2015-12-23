@@ -11,6 +11,7 @@ import com.lh.flux.domain.event.*;
 import com.lh.flux.view.*;
 import com.squareup.otto.*;
 import java.lang.ref.*;
+import android.widget.*;
 
 public class WelfareService extends Service
 {
@@ -22,24 +23,20 @@ public class WelfareService extends Service
 	private long intervalTime=2000,actTime;
 	private int loginTimes=3;
 
-	public static boolean isAlive=false;
-
+	private boolean isAlive=false;
 	private boolean isGrabWelfare=false;
+	private boolean isNeedGrab=false;
+	
 	private PowerManager.WakeLock lock;
 	private WifiManager.WifiLock wlock;
 	private NotificationManager nm;
-	private boolean isNeedGrab=false;
 
 	public static final int START_GRAB=0;
-	public static final int STOP_SERVICE=1;
+	public static final int START_GRAB_DELY=1;
+	public static final int STOP_SERVICE=2;
 	public static final int FLAG_SERVICE_RUNNING=0;
 	public static final int FLAG_WELFARE_RESULT=1;
 	public static final String LOCK_TAG="auto_grab_welfare";
-
-	public boolean isGrabWelfare()
-	{
-		return isGrabWelfare;
-	}
 
 	@Override
 	public void onCreate()
@@ -63,37 +60,54 @@ public class WelfareService extends Service
 		intervalTime = Long.parseLong(sp.getString("interval_time", "2")) * 1000l;
 		loginTimes = Integer.parseInt(sp.getString("retry_times", "3"));
 		durTime = Long.parseLong(sp.getString("time_out", "3")) * 60 * 1000l;
-		showNotification("正在等待", FLAG_SERVICE_RUNNING);
 		Log("lock cpu wifi");
-		startTime = System.currentTimeMillis();
 		isAlive = true;
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId)
 	{
-		if (!isGrabWelfare)
+		int mode=intent.getIntExtra("mode", -1);
+		if (mode == STOP_SERVICE)
 		{
-			Log("service start");
-			actTime = intent.getLongExtra("act", startTime);
-			Log("startTime=" + startTime);
-			Log("actTime=" + actTime);
-			if (intent.getBooleanExtra("auto", false) && !isNeedGrab)
+			releaseLockAndStop();
+		}
+		else if (mode == START_GRAB || mode == START_GRAB_DELY)
+		{
+			if (!isGrabWelfare)
 			{
-				startAutoGrabWithDely();
+				//isGrabWelfare = true;
+				Log("service start");
+				startTime = System.currentTimeMillis();
+				actTime = intent.getLongExtra("act", startTime);
+				Log("startTime=" + startTime);
+				Log("actTime=" + actTime);
+				if (mode == START_GRAB_DELY)
+				{
+					startAutoGrabWithDely();
+				}
+				else if (mode == START_GRAB)
+				{
+					startAutoGrab();
+				}
+			}
+			else
+			{
+				Toast.makeText(getApplicationContext(), "服务已在运行", Toast.LENGTH_SHORT).show();
 			}
 		}
-		sendToPresenter(new WelfareServiceCreatEvent(new WeakReference<WelfareService>(this)));
 		return START_NOT_STICKY;
 	}
 
-	public void startAutoGrabWithDely()
+	private void startAutoGrabWithDely()
 	{
+		isGrabWelfare = true;
+		showNotification("正在等待", FLAG_SERVICE_RUNNING);
 		SharedPreferences sp=getSharedPreferences("auto_grab", Context.MODE_PRIVATE);
 		sp.edit().putString("time", null).commit();
 		long delyTime=actTime - startTime;
 		Log("dely=" + delyTime);
-		if (delyTime > 0 && !isGrabWelfare)
+		if (delyTime > 0)
 		{
 			mHandler.postDelayed(new Runnable(){
 
@@ -111,8 +125,9 @@ public class WelfareService extends Service
 		}
 	}
 
-	public void startAutoGrab()
+	private void startAutoGrab()
 	{
+		isGrabWelfare = true;
 		if (FluxUserManager.getInstance().getUser().isLogin() == false)
 		{
 			isNeedGrab = true;
@@ -127,7 +142,6 @@ public class WelfareService extends Service
 		}
 		else
 		{
-			isGrabWelfare = true;
 			mWelfareUsecase.grabWelfare(FluxUserManager.getInstance().getUser());
 		}
 	}
@@ -149,7 +163,7 @@ public class WelfareService extends Service
 			builder.setContentText(msg);
 			Notification no=builder.build();
 			no.flags = Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
-			nm.notify(FLAG_SERVICE_RUNNING,no);
+			nm.notify(FLAG_SERVICE_RUNNING, no);
 		}
 		else
 		{
@@ -161,59 +175,50 @@ public class WelfareService extends Service
 			Notification no=builder.build();
 			no.flags = Notification.FLAG_AUTO_CANCEL;
 			//nm.cancel(FLAG_SERVICE_RUNNING);
-			nm.notify(FLAG_WELFARE_RESULT,no);
+			nm.notify(FLAG_WELFARE_RESULT, no);
 		}
 	}
 
 	@Subscribe
 	public void onGrabEventReceive(GrabEvent event)
 	{
-		if (System.currentTimeMillis() - actTime > durTime)
+		if (event.isSuccess())
 		{
-			isGrabWelfare = false;
-			Log("超时");
-			showNotification("超时", FLAG_WELFARE_RESULT);
-			releaseLockAndStop();
+			//Log(event.getData().getMsg());
+			if ("000".equals(event.getData().getReturnCode()))
+			{
+				isGrabWelfare = false;
+				showNotification("抢到红包", FLAG_WELFARE_RESULT);
+				releaseLockAndStop();
+			}
+			else if ("001".equals(event.getData().getReturnCode()))
+			{
+				showNotification("正在重新获取Cookie", FLAG_SERVICE_RUNNING);
+				FluxUserManager.getInstance().getUser().setCookie(null);
+				grabWelfareDelay();
+			}
+			else if ("002".equals(event.getData().getReturnCode()))
+			{
+				showNotification("正在抢红包", FLAG_SERVICE_RUNNING);
+				grabWelfareDelay();
+			}
+			else if ("003".equals(event.getData().getReturnCode()))
+			{
+				isGrabWelfare = false;
+				showNotification("每天只能抢一次红包", FLAG_WELFARE_RESULT);
+				releaseLockAndStop();
+			}
+			else if ("004".equals(event.getData().getReturnCode()))
+			{
+				isGrabWelfare = false;
+				showNotification("没抢到红包", FLAG_WELFARE_RESULT);
+				releaseLockAndStop();
+			}
 		}
 		else
 		{
-			if (event.isSuccess())
-			{
-				//Log(event.getData().getMsg());
-				if ("000".equals(event.getData().getReturnCode()))
-				{
-					isGrabWelfare = false;
-					showNotification("抢到红包", FLAG_WELFARE_RESULT);
-					releaseLockAndStop();
-				}
-				else if ("001".equals(event.getData().getReturnCode()))
-				{
-					showNotification("正在重新获取Cookie", FLAG_SERVICE_RUNNING);
-					FluxUserManager.getInstance().getUser().setCookie(null);
-					grabWelfareDelay();
-				}
-				else if ("002".equals(event.getData().getReturnCode()))
-				{
-					showNotification("正在抢红包", FLAG_SERVICE_RUNNING);
-					grabWelfareDelay();
-				}
-				else if ("003".equals(event.getData().getReturnCode()))
-				{
-					isGrabWelfare = false;
-					showNotification("每天只能抢一次红包", FLAG_WELFARE_RESULT);
-					releaseLockAndStop();
-				}
-				else if ("004".equals(event.getData().getReturnCode()))
-				{
-					isGrabWelfare = false;
-					showNotification("没抢到红包", FLAG_WELFARE_RESULT);
-					releaseLockAndStop();
-				}
-			}
-			else
-			{
-				grabWelfareDelay();
-			}
+			showNotification("抓取红包失败,正在重试",FLAG_SERVICE_RUNNING);
+			grabWelfareDelay();
 		}
 	}
 
@@ -287,17 +292,27 @@ public class WelfareService extends Service
 
 	private void grabWelfareDelay()
 	{
-		mHandler.postDelayed(new Runnable(){
+		if (System.currentTimeMillis() - actTime > durTime)
+		{
+			isGrabWelfare = false;
+			Log("超时");
+			showNotification("超时", FLAG_WELFARE_RESULT);
+			releaseLockAndStop();
+		}
+		else
+		{
+			mHandler.postDelayed(new Runnable(){
 
-				@Override
-				public void run()
-				{
-					if (isAlive)
+					@Override
+					public void run()
 					{
-						startAutoGrab();
+						if (isAlive)
+						{
+							startAutoGrab();
+						}
 					}
-				}
-			}, intervalTime);
+				}, intervalTime);
+		}
 	}
 
 	private void Log(String msg)
@@ -308,20 +323,20 @@ public class WelfareService extends Service
 
 	private void releaseLockAndStop()
 	{
-		isAlive = false;
 		if (lock != null && lock.isHeld())
 		{
 			lock.release();
+			lock = null;
 			Log("unlock cpu");
 		}
 		if (wlock != null && wlock.isHeld())
 		{
 			wlock.release();
+			wlock = null;
 			Log("unlock wifi");
 		}
 		stopSelf();
 	}
-
 
 	private void sendToPresenter(final Object o)
 	{
@@ -350,16 +365,6 @@ public class WelfareService extends Service
 		BusProvide.getBus().unregister(this);
 		mWelfareUsecase.onDestroy();
 		mLoginUsecase.onDestroy();
-		if (lock != null && lock.isHeld())
-		{
-			lock.release();
-			Log("unlock cpu");
-		}
-		if (wlock != null && wlock.isHeld())
-		{
-			wlock.release();
-			Log("unlock wifi");
-		}
 		mHandler.removeCallbacksAndMessages(null);
 		Log("service destroy");
 		super.onDestroy();
@@ -367,5 +372,4 @@ public class WelfareService extends Service
 		FluxApp.getRefWatcher(this).watch(mWelfareUsecase);
 		FluxApp.getRefWatcher(this).watch(mLoginUsecase);
 	}
-
 }

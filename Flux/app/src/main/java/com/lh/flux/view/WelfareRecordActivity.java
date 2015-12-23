@@ -12,6 +12,7 @@ import com.lh.flux.view.adapter.*;
 import java.util.*;
 
 import android.support.v7.widget.Toolbar;
+import com.umeng.analytics.*;
 
 public class WelfareRecordActivity extends AppCompatActivity implements IWelfareRecordActivity,SwipeRefreshLayout.OnRefreshListener
 {
@@ -64,7 +65,21 @@ public class WelfareRecordActivity extends AppCompatActivity implements IWelfare
 	@Override
 	public void showToast(String msg)
 	{
-		Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	@Override

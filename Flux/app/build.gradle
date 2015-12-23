@@ -8,8 +8,8 @@ android {
         applicationId "com.lh.flux"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+        versionCode 5
+        versionName "1.5"
     }
     buildTypes {
         release {
@@ -26,5 +26,12 @@ dependencies {
 	compile 'com.android.support:appcompat-v7:+'
 	compile 'com.squareup:otto:+'
 	compile 'com.alibaba:fastjson:+'
+	compile 'com.tencent.bugly:crashreport:+'  //其中latest.release为当前最新的Bugly SDK版本号
+	compile 'com.umeng.analytics:analytics:+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+bugly {
+    appId = '900014048'    //注册时分配的App ID
+    appKey = 'GdnYN70tdVzhiNzY'  //注册时分配的App Key
 }

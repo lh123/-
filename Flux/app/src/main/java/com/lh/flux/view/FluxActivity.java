@@ -10,6 +10,7 @@ import com.lh.flux.mvp.presenter.*;
 import com.lh.flux.mvp.view.*;
 
 import android.support.v7.widget.Toolbar;
+import com.umeng.analytics.*;
 
 public class FluxActivity extends AppCompatActivity implements View.OnClickListener,IFluxActivity
 {
@@ -111,7 +112,7 @@ public class FluxActivity extends AppCompatActivity implements View.OnClickListe
 	@Override
 	public void showToast(String msg)
 	{
-		Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -192,6 +193,20 @@ public class FluxActivity extends AppCompatActivity implements View.OnClickListe
 	public Context getContext()
 	{
 		return this;
+	}
+
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 	
 	@Override

@@ -6,7 +6,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.1.0'
-
+		classpath 'com.tencent.bugly:symtabfileuploader:+'  //其中latest.release为当前最新的符号表插件版本号
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
