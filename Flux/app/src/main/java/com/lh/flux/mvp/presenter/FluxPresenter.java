@@ -12,10 +12,8 @@ import com.lh.flux.service.*;
 import com.lh.flux.view.*;
 import com.squareup.otto.*;
 import com.umeng.update.*;
-import java.lang.ref.*;
 import java.text.*;
 import java.util.*;
-import android.app.ActivityManager.*;
 
 public class FluxPresenter
 {
@@ -155,7 +153,6 @@ public class FluxPresenter
 						am.setExact(AlarmManager.RTC_WAKEUP, ca.getTimeInMillis() - advanceTime, pi);
 					}
 					SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-					//System.out.println(new Date(ca.getTimeInMillis() - advanceTime));
 					mFluxActivity.setWelfareServiceStatus("自动抢红包:" + df.format(ca.getTime()), false);
 					LogUtil.getInstance().logE("FluxPresenter", "auto grab " + df.format(ca.getTime()));
 					sp.edit().putString("time", "自动抢红包:" + df.format(ca.getTime())).commit();
@@ -212,6 +209,15 @@ public class FluxPresenter
 			{
 				isNeedRefreshWelfareInfo = false;
 				startRefreshWelfareInfo();
+			}
+		}
+		else
+		{
+			if(isNeedRefreshWelfareInfo)
+			{
+				isNeedRefreshWelfareInfo=false;
+				mFluxActivity.setWelfareProgressStatus(false);
+				mFluxActivity.showToast("请检查网络连接");
 			}
 		}
 	}
