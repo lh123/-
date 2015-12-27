@@ -2,16 +2,20 @@ package com.lh.flux.model.api;
 import com.lh.flux.model.entity.*;
 import java.io.*;
 import java.net.*;
+import com.lh.flux.model.utils.*;
 
 public class WelfareApiImpl implements WelfareApi
 {
 	@Override
 	public String getWelfareStatus(User u)
 	{
+		URL url=null;
+		HttpURLConnection conn=null;
+		String temp=null;
 		try
 		{
-			URL url=new URL(ApiStore.getWelfareStatusApi());
-			HttpURLConnection conn=(HttpURLConnection) url.openConnection();
+			url=new URL(ApiStore.getWelfareStatusApi());
+			conn=(HttpURLConnection) url.openConnection();
 			//conn.setRequestProperty("Origin","http://game.hb189.mobi");
 			conn.setRequestProperty("Accept", "application/json, text/plain, */*");
 			conn.setRequestProperty("Referer", "http://game.hb189.mobi/welfare_android?phone=" + u.getPhone() + "&sessionId=" + u.getSessionID());
@@ -19,34 +23,25 @@ public class WelfareApiImpl implements WelfareApi
 			conn.setConnectTimeout(3000);
 			conn.setReadTimeout(3000);
 			conn.connect();
-			InputStream is=conn.getInputStream();
-			InputStreamReader isr=new InputStreamReader(is);
-			BufferedReader br=new BufferedReader(isr);
-			StringBuilder sb=new StringBuilder();
-			String temp;
-			while ((temp = br.readLine()) != null)
-			{
-				sb.append(temp);
-			}
-			br.close();
-			isr.close();
-			is.close();
-			return sb.toString();
+			temp=StreamUtils.readFromStream(conn.getInputStream());
 		}
 		catch (MalformedURLException e)
 		{}
 		catch (IOException e)
 		{}
-		return null;
+		return temp;
 	}
 
 	@Override
 	public String getWelfareCookie(User u)
 	{
+		URL url=null;
+		HttpURLConnection conn=null;
+		String cookie=null;
 		try
 		{
-			URL url=new URL(ApiStore.getWelfareCookieApi(u.getPhone(),u.getSessionID()));
-			HttpURLConnection conn=(HttpURLConnection) url.openConnection();
+			url=new URL(ApiStore.getWelfareCookieApi(u.getPhone(),u.getSessionID()));
+			conn=(HttpURLConnection) url.openConnection();
 			conn.setConnectTimeout(3000);
 			conn.setReadTimeout(3000);
 			conn.setRequestProperty("Accept-Encoding", "gzip,deflate");
@@ -54,52 +49,42 @@ public class WelfareApiImpl implements WelfareApi
 			conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 5.0.2; MI 2 Build/LRX22G) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/37.0.0.0 Mobile Safari/537.36");
 			conn.setRequestProperty("X-Requested-With", "com.hoyotech.lucky_draw");
 			conn.connect();
-			String cookie=conn.getHeaderField("Set-Cookie");
+			cookie=conn.getHeaderField("Set-Cookie");
 			if(cookie!=null)
 			{
 				cookie = cookie.split(";")[0];
-				return cookie;
 			}
 		}
 		catch (MalformedURLException e)
 		{}
 		catch (IOException e)
 		{}
-		return null;
+		return cookie;
 	}
 
 	@Override
 	public String grabWelfare(User u)
 	{
+		URL url=null;
+		HttpURLConnection conn=null;
+		String temp=null;
 		try
 		{
-			URL url=new URL(ApiStore.getGrabWelfareApi());
-			HttpURLConnection conn=(HttpURLConnection) url.openConnection();
+			url=new URL(ApiStore.getGrabWelfareApi());
+			conn=(HttpURLConnection) url.openConnection();
 			//conn.setRequestProperty("Accept","application/json, text/plain, */*");
 			conn.setRequestProperty("Referer", "http://game.hb189.mobi/welfare_android?phone=" + u.getPhone() + "&sessionId=" + u.getSessionID());
 			conn.setRequestProperty("Cookie", u.getCookie());
 			conn.setConnectTimeout(3000);
 			conn.setReadTimeout(2000);
 			conn.connect();
-			InputStream is=conn.getInputStream();
-			InputStreamReader isr=new InputStreamReader(is);
-			BufferedReader br=new BufferedReader(isr);
-			StringBuilder sb=new StringBuilder();
-			String temp;
-			while ((temp = br.readLine()) != null)
-			{
-				sb.append(temp);
-			}
-			br.close();
-			isr.close();
-			is.close();
-			return sb.toString();
+			temp=StreamUtils.readFromStream(conn.getInputStream());
 		}
 		catch (MalformedURLException e)
 		{}
 		catch (IOException e)
 		{}
-		return null;
+		return temp;
 	}
 	
 }

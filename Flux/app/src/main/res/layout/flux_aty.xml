@@ -29,6 +29,7 @@
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
 			android:text="登录"
+			android:textColor="?attr/textColor"
 			android:layout_alignParentRight="true"
 			android:id="@+id/btn_login"/>
 
@@ -167,6 +168,7 @@
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
 			android:text="抢"
+			android:textColor="?attr/textColor"
 			android:enabled="false"
 			android:id="@+id/btn_grab"/>
 
@@ -174,6 +176,7 @@
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
 			android:text="历史"
+			android:textColor="?attr/textColor"
 			android:enabled="false"
 			android:id="@+id/btn_welfare_record"/>
 
@@ -181,6 +184,7 @@
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
 			android:text="自动抢红包"
+			android:textColor="?attr/textColor"
 			android:id="@+id/btn_auto_grab_welfare"/>
 
 	</LinearLayout>

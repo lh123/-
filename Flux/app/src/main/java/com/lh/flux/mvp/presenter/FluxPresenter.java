@@ -146,7 +146,14 @@ public class FluxPresenter
 					si.setClass(mFluxActivity.getContext().getApplicationContext(), WelfareService.class);
 					PendingIntent pi=PendingIntent.getService(mFluxActivity.getContext().getApplicationContext(), 0, si, PendingIntent.FLAG_UPDATE_CURRENT);
 					am.cancel(pi);
-					am.set(AlarmManager.RTC_WAKEUP, ca.getTimeInMillis() - advanceTime, pi);
+					if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.MNC)
+					{
+						am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, ca.getTimeInMillis() - advanceTime, pi);
+					}
+					else
+					{
+						am.setExact(AlarmManager.RTC_WAKEUP, ca.getTimeInMillis() - advanceTime, pi);
+					}
 					SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					//System.out.println(new Date(ca.getTimeInMillis() - advanceTime));
 					mFluxActivity.setWelfareServiceStatus("自动抢红包:" + df.format(ca.getTime()), false);
@@ -191,7 +198,7 @@ public class FluxPresenter
 		}
 		else
 		{
-			mFluxActivity.showToast("未知错误");
+			mFluxActivity.showToast("请检查网络连接");
 		}
 	}
 
@@ -232,7 +239,7 @@ public class FluxPresenter
 		else
 		{
 			mFluxActivity.setLoginStatus(event.isSuccess() ?mFluxActivity.LOGIN_SUCCESS: mFluxActivity.LOGIN_FAIL);
-			mFluxActivity.showToast("未知错误");
+			mFluxActivity.showToast("请检查网络连接");
 		}
 	}
 
@@ -259,7 +266,7 @@ public class FluxPresenter
 		}
 		else
 		{
-			mFluxActivity.showToast("未知错误");
+			mFluxActivity.showToast("请检查网络连接");
 		}
 	}
 

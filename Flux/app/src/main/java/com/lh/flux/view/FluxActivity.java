@@ -6,11 +6,12 @@ import android.support.v7.widget.*;
 import android.view.*;
 import android.widget.*;
 import com.lh.flux.*;
+import com.lh.flux.domain.*;
 import com.lh.flux.mvp.presenter.*;
 import com.lh.flux.mvp.view.*;
+import com.umeng.analytics.*;
 
 import android.support.v7.widget.Toolbar;
-import com.umeng.analytics.*;
 
 public class FluxActivity extends AppCompatActivity implements View.OnClickListener,IFluxActivity
 {
@@ -24,6 +25,7 @@ public class FluxActivity extends AppCompatActivity implements View.OnClickListe
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+		ThemeUtil.getInstance().setTheme(this);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.flux_aty);
 		toolbar=(Toolbar) findViewById(R.id.toolbar);

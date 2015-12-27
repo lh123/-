@@ -13,6 +13,7 @@ import java.util.*;
 
 import android.support.v7.widget.Toolbar;
 import com.umeng.analytics.*;
+import com.lh.flux.domain.*;
 
 public class WelfareRecordActivity extends AppCompatActivity implements IWelfareRecordActivity,SwipeRefreshLayout.OnRefreshListener
 {
@@ -26,6 +27,7 @@ public class WelfareRecordActivity extends AppCompatActivity implements IWelfare
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+		ThemeUtil.getInstance().setTheme(this);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.welfare_record_aty);
 		toolbar=(Toolbar) findViewById(R.id.toolbar);

@@ -3,16 +3,20 @@ package com.lh.flux.model.api;
 import com.lh.flux.model.entity.*;
 import java.io.*;
 import java.net.*;
+import com.lh.flux.model.utils.*;
 
 public class FluxApiImpl implements FluxApi
 {
 	@Override
 	public String getFluxInfo(User u)
 	{
+		URL url=null;
+		HttpURLConnection conn=null;
+		String temp=null;
 		try
 		{
-			URL url=new URL(ApiStore.getFluxApi());
-			HttpURLConnection conn=(HttpURLConnection) url.openConnection();
+			url=new URL(ApiStore.getFluxApi());
+			conn=(HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("POST");
 			conn.setDoInput(true);
 			conn.setDoOutput(true);
@@ -22,29 +26,14 @@ public class FluxApiImpl implements FluxApi
 			conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
 			conn.setRequestProperty("Referer", "http://game.hb189.mobi/android-personal-center?phone=" + u.getPhone() + "&sessionId=" + u.getSessionID());
 			conn.connect();
-			OutputStream ou=conn.getOutputStream();
 			String postInfo="{\"phone\":\"" + u.getPhone() + "\"}";
-			ou.write(postInfo.getBytes());
-			ou.flush();
-			ou.close();
-			InputStream is=conn.getInputStream();
-			InputStreamReader isr=new InputStreamReader(is);
-			BufferedReader br=new BufferedReader(isr);
-			StringBuilder sb=new StringBuilder();
-			String temp;
-			while ((temp = br.readLine()) != null)
-			{
-				sb.append(temp);
-			}
-			br.close();
-			isr.close();
-			is.close();
-			return sb.toString();
+			StreamUtils.writeToStream(conn.getOutputStream(),postInfo.getBytes());
+			temp=StreamUtils.readFromStream(conn.getInputStream());
 		}
 		catch (MalformedURLException e)
 		{}
 		catch (IOException e)
 		{}
-		return null;
+		return temp;
 	}
 }

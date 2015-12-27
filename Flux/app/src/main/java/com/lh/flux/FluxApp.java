@@ -1,13 +1,13 @@
 package com.lh.flux;
 import android.app.*;
 import android.content.*;
+import android.os.*;
 import com.lh.flux.crash.*;
 import com.lh.flux.domain.*;
 import com.squareup.leakcanary.*;
-import java.lang.reflect.*;
-import android.os.*;
 import com.tencent.bugly.crashreport.*;
 import com.umeng.analytics.*;
+import java.lang.reflect.*;
 
 public class FluxApp extends Application
 {
@@ -25,6 +25,7 @@ public class FluxApp extends Application
 		Thread.setDefaultUncaughtExceptionHandler(MyCrashHandler.getInstance());
 		MobclickAgent.setCatchUncaughtExceptions(false);
 		CrashReport.initCrashReport(this,"900014048",false);
+		ThemeUtil.getInstance().init(this);
 	}
 
 	public static RefWatcher getRefWatcher(Context context)

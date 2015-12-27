@@ -2,47 +2,42 @@ package com.lh.flux.model.api;
 import com.lh.flux.model.entity.*;
 import java.io.*;
 import java.net.*;
+import com.lh.flux.model.utils.*;
 
 public class LoginApiImpl implements LoginApi
 {
 	@Override
 	public String getCap(User u)
 	{
+		URL url=null;
+		HttpURLConnection conn=null;
+		String temp=null;
 		try
 		{
-			URL url=new URL(ApiStore.getCapApi(u.getPhone()));
-			HttpURLConnection conn=(HttpURLConnection) url.openConnection();
+			url=new URL(ApiStore.getCapApi(u.getPhone()));
+			conn=(HttpURLConnection) url.openConnection();
 			conn.setConnectTimeout(3000);
 			conn.setReadTimeout(3000);
 			conn.connect();
-			InputStream is=conn.getInputStream();
-			InputStreamReader isr=new InputStreamReader(is);
-			BufferedReader br=new BufferedReader(isr);
-			StringBuilder sb=new StringBuilder();
-			String temp;
-			while ((temp = br.readLine()) != null)
-			{
-				sb.append(temp);
-			}
-			br.close();
-			isr.close();
-			is.close();
-			return sb.toString();
+			temp=StreamUtils.readFromStream(conn.getInputStream());
 		}
 		catch (MalformedURLException e)
 		{}
 		catch (IOException e)
 		{}
-		return null;
+		return temp;
 	}
 
 	@Override
 	public String login(User u,String cap)
 	{
+		URL url=null;
+		HttpURLConnection conn=null;
+		String temp=null;
 		try
 		{
-			URL url=new URL(ApiStore.getLoginApi());
-			HttpURLConnection conn=(HttpURLConnection) url.openConnection();
+			url=new URL(ApiStore.getLoginApi());
+			conn=(HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("POST");
 			conn.setConnectTimeout(3000);
 			conn.setReadTimeout(3000);
@@ -50,38 +45,26 @@ public class LoginApiImpl implements LoginApi
 			conn.setDoInput(true);
 			conn.setDoOutput(true);
 			conn.connect();
-			OutputStream ou=conn.getOutputStream();
-			ou.write(generatePostInfoWithCap(u,cap).getBytes());
-			ou.flush();
-			ou.close();
-			InputStream is=conn.getInputStream();
-			InputStreamReader isr=new InputStreamReader(is);
-			BufferedReader br=new BufferedReader(isr);
-			StringBuilder sb=new StringBuilder();
-			String temp;
-			while ((temp = br.readLine()) != null)
-			{
-				sb.append(temp);
-			}
-			br.close();
-			isr.close();
-			is.close();
-			return sb.toString();
+			StreamUtils.writeToStream(conn.getOutputStream(),generatePostInfoWithCap(u,cap).getBytes());
+			temp=StreamUtils.readFromStream(conn.getInputStream());
 		}
 		catch (MalformedURLException e)
 		{}
 		catch (IOException e)
 		{}
-		return null;
+		return temp;
 	}
 
 	@Override
 	public String login(User u)
 	{
+		URL url=null;
+		HttpURLConnection conn=null;
+		String temp=null;
 		try
 		{
-			URL url=new URL(ApiStore.getLoginApi());
-			HttpURLConnection conn=(HttpURLConnection) url.openConnection();
+			url=new URL(ApiStore.getLoginApi());
+			conn=(HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("POST");
 			conn.setConnectTimeout(3000);
 			conn.setReadTimeout(3000);
@@ -90,29 +73,14 @@ public class LoginApiImpl implements LoginApi
 			conn.setDoOutput(true);
 			conn.setFollowRedirects(true);
 			conn.connect();
-			OutputStream ou=conn.getOutputStream();
-			ou.write(generatePostInfoWithToken(u).getBytes());
-			ou.flush();
-			ou.close();
-			InputStream is=conn.getInputStream();
-			InputStreamReader isr=new InputStreamReader(is);
-			BufferedReader br=new BufferedReader(isr);
-			StringBuilder sb=new StringBuilder();
-			String temp;
-			while ((temp = br.readLine()) != null)
-			{
-				sb.append(temp);
-			}
-			br.close();
-			isr.close();
-			is.close();
-			return sb.toString();
+			StreamUtils.writeToStream(conn.getOutputStream(),generatePostInfoWithToken(u).getBytes());
+			temp=StreamUtils.readFromStream(conn.getInputStream());
 		}
 		catch (MalformedURLException e)
 		{}
 		catch (IOException e)
 		{}
-		return null;
+		return temp;
 	}
 	
 	private String generatePostInfoWithToken(User u)

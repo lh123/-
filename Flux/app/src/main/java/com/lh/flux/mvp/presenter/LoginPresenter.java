@@ -20,7 +20,6 @@ public class LoginPresenter
 		u = FluxUserManager.getInstance().getUser();
 	}
 
-	@Override
 	public void onCreat()
 	{
 		BusProvide.getBus().register(this);

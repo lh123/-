@@ -11,6 +11,7 @@ import com.lh.flux.mvp.presenter.*;
 import com.lh.flux.mvp.view.*;
 import android.support.v7.widget.Toolbar;
 import com.umeng.analytics.*;
+import com.lh.flux.domain.*;
 
 public class LoginActivity extends AppCompatActivity implements ILoginActivity
 {
@@ -21,6 +22,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+		ThemeUtil.getInstance().setTheme(this);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_aty);
 		toolbar=(Toolbar) findViewById(R.id.toolbar);

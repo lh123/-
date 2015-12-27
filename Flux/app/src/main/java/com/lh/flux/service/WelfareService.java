@@ -170,6 +170,7 @@ public class WelfareService extends Service
 			builder.setContentTitle("服务已关闭");
 			builder.setContentText(msg);
 			Intent i=new Intent(this, FluxActivity.class);
+			i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			PendingIntent pi=PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 			builder.setContentIntent(pi);
 			Notification no=builder.build();
