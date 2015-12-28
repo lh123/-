@@ -13,7 +13,7 @@ public class SettingFragment extends PreferenceFragment
 	{
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.setting_aty);
-		((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		//((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		findPreference("theme").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
 
 				@Override

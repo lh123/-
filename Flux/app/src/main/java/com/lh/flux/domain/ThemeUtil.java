@@ -38,6 +38,10 @@ public class ThemeUtil
 				a.setTheme(R.style.ThemeBlue);
 				break;
 		}
-		//a.setTheme(id);
+	}
+	
+	public int getCurrentTheme()
+	{
+		return Integer.parseInt(mode);
 	}
 }

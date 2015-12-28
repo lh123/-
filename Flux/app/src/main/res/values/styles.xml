@@ -19,7 +19,19 @@
 		<item name="textColor">@color/white</item>
 		<item name="viewBackground">@color/white</item>
 	</style>
-
+	
+	<style name="DialogBlue" parent="Base.Theme.AppCompat.Light.Dialog">
+		<item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryDark">@color/blue_dark</item>
+        <item name="colorAccent">@color/blue_accent</item>
+	</style>
+	
+	<style name="DialogRed" parent="Base.Theme.AppCompat.Light.Dialog">
+		<item name="colorPrimary">@color/red</item>
+        <item name="colorPrimaryDark">@color/red_dark</item>
+        <item name="colorAccent">@color/red_accent</item>
+	</style>
+	
 	<style name="CrashDialog" parent="Base.Theme.AppCompat.Light.Dialog">
 	</style>
 </resources>

@@ -2,17 +2,14 @@ package com.lh.flux.mvp.presenter;
 import android.app.*;
 import android.content.*;
 import android.os.*;
-import android.preference.*;
-import android.widget.*;
-import com.lh.flux.crash.*;
 import com.lh.flux.domain.*;
 import com.lh.flux.domain.event.*;
 import com.lh.flux.mvp.view.*;
 import com.lh.flux.service.*;
 import com.lh.flux.view.*;
+import com.lh.flux.view.fragment.*;
 import com.squareup.otto.*;
 import com.umeng.update.*;
-import java.text.*;
 import java.util.*;
 
 public class FluxPresenter
@@ -120,45 +117,8 @@ public class FluxPresenter
 
 	public void startGrabWelfareAtTime()
 	{
-		final long advanceTime=Long.parseLong(PreferenceManager.getDefaultSharedPreferences(mFluxActivity.getContext().getApplicationContext()).getString("advance_time", "3")) * 60 * 1000;
-		final Calendar ca=Calendar.getInstance();
-		ca.setTimeInMillis(System.currentTimeMillis());
-		TimePickerDialog dialog=new TimePickerDialog(mFluxActivity.getContext(), new TimePickerDialog.OnTimeSetListener(){
-
-				@Override
-				public void onTimeSet(TimePicker p1, int p2, int p3)
-				{
-					AlarmManager am=(AlarmManager) mFluxActivity.getContext().getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-					ca.set(Calendar.HOUR_OF_DAY, p2);
-					ca.set(Calendar.MINUTE, p3);
-					ca.set(Calendar.SECOND, 0);
-					ca.set(Calendar.MILLISECOND, 0);
-					if (ca.getTimeInMillis() <= System.currentTimeMillis())
-					{
-						mFluxActivity.showToast("时间设定为明天");
-						ca.add(Calendar.DAY_OF_MONTH, 1);
-					}
-					Intent si=new Intent();
-					si.putExtra("mode", WelfareService.START_GRAB_DELY);
-					si.putExtra("act", ca.getTimeInMillis());
-					si.setClass(mFluxActivity.getContext().getApplicationContext(), WelfareService.class);
-					PendingIntent pi=PendingIntent.getService(mFluxActivity.getContext().getApplicationContext(), 0, si, PendingIntent.FLAG_UPDATE_CURRENT);
-					am.cancel(pi);
-					if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.MNC)
-					{
-						am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, ca.getTimeInMillis() - advanceTime, pi);
-					}
-					else
-					{
-						am.setExact(AlarmManager.RTC_WAKEUP, ca.getTimeInMillis() - advanceTime, pi);
-					}
-					SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-					mFluxActivity.setWelfareServiceStatus("自动抢红包:" + df.format(ca.getTime()), false);
-					LogUtil.getInstance().logE("FluxPresenter", "auto grab " + df.format(ca.getTime()));
-					sp.edit().putString("time", "自动抢红包:" + df.format(ca.getTime())).commit();
-				}
-			}, ca.get(Calendar.HOUR_OF_DAY), ca.get(Calendar.MINUTE), true);
-		dialog.show();
+		DatePickerFragment f=new DatePickerFragment();
+		f.show(((FluxActivity)mFluxActivity).getSupportFragmentManager(),DatePickerFragment.TAG);
 	}
 
 	public void stopWelfareService()
