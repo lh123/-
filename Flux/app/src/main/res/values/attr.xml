@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<attr name="colorDisable" formate="color|reference"/>
 	<attr name="textColor" formate="color|reference"/>
 	<attr name="viewBackground" formate="color|reference"/>
 </resources>

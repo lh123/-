@@ -7,6 +7,7 @@ import android.widget.*;
 import com.lh.flux.*;
 import java.io.*;
 import com.lh.flux.view.*;
+import com.lh.flux.domain.*;
 
 public class CrashActivity extends AppCompatActivity implements View.OnClickListener
 {
@@ -16,6 +17,7 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+		ThemeUtil.getInstance().setTheme(this);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.crash_aty);
 		Throwable e=(Throwable) getIntent().getSerializableExtra("error");

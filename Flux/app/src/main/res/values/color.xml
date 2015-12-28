@@ -2,11 +2,13 @@
 <resources>    
 	<color name="blue">#03A9F4</color>
 	<color name="blue_dark">#0288D1</color>
+	<color name="blue_deep">#006BA9</color>
 	<color name="blue_light">#B3E5FC</color>
 	<color name="blue_accent">#448AFF</color>
 	
 	<color name="red">#F44336</color>
 	<color name="red_dark">#D32F2F</color>
+	<color name="red_deep">#AC0A00</color>
 	<color name="red_light">#FFCDD2</color>
 	<color name="red_accent">#FF5722</color>
 	

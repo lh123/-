@@ -9,6 +9,7 @@
 		layout="@layout/toolbar"/>
 
 	<RelativeLayout
+		android:layout_margin="@dimen/marginEdge"
 		android:layout_height="wrap_content"
 		android:layout_width="match_parent">
 
@@ -26,12 +27,14 @@
 			android:id="@+id/tv_login_status"/>
 
 		<Button
-			android:layout_height="wrap_content"
+			android:layout_margin="@dimen/marginEdge"
+			android:layout_height="@dimen/buttonHeight"
 			android:layout_width="wrap_content"
 			android:text="登录"
 			android:textColor="?attr/textColor"
 			android:layout_alignParentRight="true"
-			android:id="@+id/btn_login"/>
+			android:id="@+id/btn_login"
+			android:background="@drawable/btn_background"/>
 
 		<Button
 			style="?android:attr/buttonBarButtonStyle"
@@ -55,7 +58,7 @@
 		android:layout_height="wrap_content"
 		android:layout_width="match_parent"
 		android:orientation="horizontal"
-		android:layout_marginTop="10dp">
+		android:layout_margin="@dimen/marginEdge">
 
 		<TextView
 			android:layout_height="wrap_content"
@@ -70,7 +73,7 @@
 
 			<Button
 				style="?android:attr/buttonBarButtonStyle"
-				android:layout_height="wrap_content"
+				android:layout_height="@dimen/buttonHeight"
 				android:layout_width="wrap_content"
 				android:text="刷新"
 				android:enabled="false"
@@ -88,6 +91,7 @@
 	</LinearLayout>
 
 	<LinearLayout
+		android:layout_margin="@dimen/marginEdge"
 		android:layout_height="wrap_content"
 		android:layout_width="match_parent"
 		android:orientation="horizontal">
@@ -113,7 +117,7 @@
 		android:layout_height="wrap_content"
 		android:layout_width="match_parent"
 		android:orientation="horizontal"
-		android:layout_marginTop="10dp">
+		android:layout_margin="@dimen/marginEdge">
 
 		<TextView
 			android:layout_height="wrap_content"
@@ -147,12 +151,14 @@
 	</LinearLayout>
 
 	<TextView
+		android:layout_margin="@dimen/marginEdge"
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
 		android:text="下轮时间:"
 		android:id="@+id/tv_next_time"/>
 
 	<TextView
+		android:layout_margin="@dimen/marginEdge"
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
 		android:text="类型:"
@@ -165,31 +171,40 @@
 		android:layout_gravity="center_horizontal">
 
 		<Button
-			android:layout_height="wrap_content"
+			android:layout_margin="@dimen/marginEdge"
+			android:layout_height="@dimen/buttonHeight"
 			android:layout_width="wrap_content"
 			android:text="抢"
 			android:textColor="?attr/textColor"
 			android:enabled="false"
-			android:id="@+id/btn_grab"/>
+			android:id="@+id/btn_grab"
+			android:background="@drawable/btn_background"/>
 
 		<Button
-			android:layout_height="wrap_content"
+			android:layout_margin="@dimen/marginEdge"
+			android:layout_height="@dimen/buttonHeight"
 			android:layout_width="wrap_content"
 			android:text="历史"
 			android:textColor="?attr/textColor"
 			android:enabled="false"
-			android:id="@+id/btn_welfare_record"/>
+			android:id="@+id/btn_welfare_record"
+			android:background="@drawable/btn_background"
+			android:padding="0dp"/>
 
 		<Button
-			android:layout_height="wrap_content"
+			android:layout_margin="@dimen/marginEdge"
+			android:layout_height="@dimen/buttonHeight"
 			android:layout_width="wrap_content"
 			android:text="自动抢红包"
 			android:textColor="?attr/textColor"
-			android:id="@+id/btn_auto_grab_welfare"/>
+			android:id="@+id/btn_auto_grab_welfare"
+			android:background="@drawable/btn_background"
+			android:padding="0dp"/>
 
 	</LinearLayout>
 
 	<LinearLayout
+		android:layout_margin="@dimen/marginEdge"
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
 		android:orientation="horizontal">

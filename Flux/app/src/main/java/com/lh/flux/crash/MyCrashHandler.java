@@ -34,6 +34,7 @@ public class MyCrashHandler implements Thread.UncaughtExceptionHandler
 		i.putExtra("error",p2);
 		PendingIntent pi=PendingIntent.getActivity(mContext,0,i,PendingIntent.FLAG_UPDATE_CURRENT);
 		AlarmManager am=(AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+		am.cancel(pi);
 		am.set(AlarmManager.RTC,System.currentTimeMillis()+1000,pi);
 		//android.os.Process.killProcess(android.os.Process.myPid());
 		System.exit(0);
