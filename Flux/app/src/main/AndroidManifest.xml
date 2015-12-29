@@ -41,7 +41,7 @@
 			android:name=".crash.CrashActivity"
 			android:label="程序崩溃了"
 			android:excludeFromRecents="true"
-			android:theme="@style/CrashDialog"/>
+			android:theme="@style/DialogBlue"/>
 		<service
 			android:name=".service.WelfareService">
 		</service>

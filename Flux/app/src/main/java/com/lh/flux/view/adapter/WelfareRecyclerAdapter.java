@@ -1,12 +1,12 @@
 package com.lh.flux.view.adapter;
 
+import android.graphics.*;
 import android.support.v7.widget.*;
 import android.view.*;
 import android.widget.*;
 import com.lh.flux.*;
 import com.lh.flux.model.entity.*;
 import java.util.*;
-import android.graphics.*;
 
 public class WelfareRecyclerAdapter extends RecyclerView.Adapter
 {

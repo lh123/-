@@ -31,7 +31,4 @@
         <item name="colorPrimaryDark">@color/red_dark</item>
         <item name="colorAccent">@color/red_accent</item>
 	</style>
-	
-	<style name="CrashDialog" parent="Base.Theme.AppCompat.Light.Dialog">
-	</style>
 </resources>

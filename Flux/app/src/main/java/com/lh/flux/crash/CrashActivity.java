@@ -17,7 +17,7 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		ThemeUtil.getInstance().setTheme(this);
+		ThemeUtil.getInstance().setDialogTheme(this);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.crash_aty);
 		Throwable e=(Throwable) getIntent().getSerializableExtra("error");

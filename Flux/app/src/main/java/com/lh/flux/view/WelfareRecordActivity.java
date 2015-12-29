@@ -38,6 +38,7 @@ public class WelfareRecordActivity extends AppCompatActivity implements IWelfare
 		LinearLayoutManager lm=new LinearLayoutManager(this);
 		lm.setOrientation(LinearLayoutManager.VERTICAL);
 		mRecyclerView.setLayoutManager(lm);
+		mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 		mRecyclerView.setAdapter(mAdapter);
 		mSwipeRefreshLayout.setOnRefreshListener(this);
 		mPresenter=new WelfareRecordPresenter(this);
@@ -54,8 +55,20 @@ public class WelfareRecordActivity extends AppCompatActivity implements IWelfare
 	@Override
 	public void setData(ArrayList<WelfareRecordEntity.Data> data)
 	{
+		int preSize=mAdapter.getItemCount();
 		mAdapter.setData(data);
-		mAdapter.notifyDataSetChanged();
+		if(preSize<data.size())
+		{
+			mAdapter.notifyItemRangeInserted(preSize,data.size()-preSize);
+		}
+		else if(preSize>data.size())
+		{
+			mAdapter.notifyItemRangeRemoved(data.size(),preSize-data.size());
+		}
+		else
+		{
+			mAdapter.notifyItemRangeChanged(0,data.size());
+		}
 	}
 
 	@Override

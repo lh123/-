@@ -4,6 +4,7 @@ import android.os.*;
 import com.lh.flux.domain.*;
 import com.lh.flux.domain.event.*;
 import com.squareup.otto.*;
+import java.util.*;
 
 public class WelfareRecordPresenter
 {
@@ -72,6 +73,7 @@ public class WelfareRecordPresenter
 		}
 		else
 		{
+			mWelfareRecordActivity.setData(new ArrayList());
 			mWelfareRecordActivity.showToast("获取失败");
 		}
 	}

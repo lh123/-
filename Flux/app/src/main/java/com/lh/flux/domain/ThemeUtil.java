@@ -23,6 +23,23 @@ public class ThemeUtil
 		return mThemeUtil;
 	}
 	
+	public void setDialogTheme(Activity a)
+	{
+		mode=PreferenceManager.getDefaultSharedPreferences(mContext).getString("theme","0");
+		switch(mode)
+		{
+			case "0":
+				a.setTheme(R.style.DialogBlue);
+				break;
+			case "1":
+				a.setTheme(R.style.DialogRed);
+				break;
+			default:
+				a.setTheme(R.style.DialogBlue);
+				break;
+		}
+	}
+	
 	public void setTheme(Activity a)
 	{
 		mode=PreferenceManager.getDefaultSharedPreferences(mContext).getString("theme","0");
