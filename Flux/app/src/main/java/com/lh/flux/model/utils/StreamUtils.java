@@ -3,7 +3,7 @@ import java.io.*;
 
 public class StreamUtils
 {
-	public static String readFromStream(InputStream in) throws IOException
+	public static String readFromStream(InputStream in)
 	{
 		InputStreamReader isr=new InputStreamReader(in);
 		BufferedReader br=new BufferedReader(isr);
