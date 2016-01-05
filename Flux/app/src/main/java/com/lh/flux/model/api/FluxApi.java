@@ -1,8 +1,8 @@
 package com.lh.flux.model.api;
 
-import com.lh.flux.model.entity.*;
+import com.lh.flux.model.entity.User;
 
 public interface FluxApi
 {
-	public String getFluxInfo(User u)
+    String getFluxInfo(User u);
 }

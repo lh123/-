@@ -1,27 +1,28 @@
 package com.lh.flux.domain.event;
-import com.lh.flux.model.entity.*;
+
+import com.lh.flux.model.entity.LoginEntity;
 
 public class LoginEvent
 {
-	private LoginEntity data;
+    private LoginEntity data;
 
-	public LoginEvent(LoginEntity data)
-	{
-		this.data = data;
-	}
+    public LoginEvent(LoginEntity data)
+    {
+        this.data = data;
+    }
 
-	public void setData(LoginEntity data)
-	{
-		this.data = data;
-	}
+    public void setData(LoginEntity data)
+    {
+        this.data = data;
+    }
 
-	public LoginEntity getData()
-	{
-		return data;
-	}
-	
-	public boolean isSuccess()
-	{
-		return data!=null;
-	}
+    public LoginEntity getData()
+    {
+        return data;
+    }
+
+    public boolean isSuccess()
+    {
+        return data != null;
+    }
 }

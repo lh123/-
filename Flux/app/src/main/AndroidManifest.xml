@@ -1,60 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.lh.flux" >
-	
-	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-	<uses-permission android:name="android.permission.READ_LOGS" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-	<uses-permission android:name="android.permission.WAKE_LOCK"/>
-	<uses-permission android:name="android.permission.DEVICE_POWER"/>
-		
+    package="com.lh.flux">
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:allowBackup="true"
-		android:name=".FluxApp"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/ThemeBlue" >
+        android:name=".FluxApp"
+        android:supportsRtl="true"
+        android:theme="@style/ThemeBlue">
         <activity
             android:name=".view.FluxActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-		<activity
-			android:name=".view.LoginActivity">
-		</activity>
-		<activity
-			android:name=".view.SettingActivity"
-			android:label="设置">
-		</activity>
-		<activity
-			android:name=".view.WelfareRecordActivity"
-			android:label="历史记录">
-		</activity>
-		<activity
-			android:name=".crash.CrashActivity"
-			android:label="程序崩溃了"
-			android:excludeFromRecents="true"
-			android:theme="@style/DialogBlue"/>
-		<service
-			android:name=".service.WelfareService">
-		</service>
-		<meta-data android:value="565c8e8ae0f55a24cc0012fb" android:name="UMENG_APPKEY"/>
-		<meta-data android:value="lh" android:name="UMENG_CHANNEL"/>
-		<service
-			android:name="com.umeng.update.net.DownloadingService"
-			android:process=":DownloadingService" >
-		</service>
-		<activity 
-			android:name="com.umeng.update.UpdateDialogActivity"
-			android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-		</activity>
+        <activity android:name=".view.LoginActivity"></activity>
+        <activity
+            android:name=".view.SettingActivity"
+            android:label="设置"></activity>
+        <activity
+            android:name=".view.WelfareRecordActivity"
+            android:label="历史记录"></activity>
+        <activity
+            android:name=".crash.CrashActivity"
+            android:label="程序崩溃了"
+            android:excludeFromRecents="true"
+            android:theme="@style/DialogBlue" />
+
+        <service android:name=".service.WelfareService"></service>
+
+        <meta-data
+            android:value="565c8e8ae0f55a24cc0012fb"
+            android:name="UMENG_APPKEY" />
+        <meta-data
+            android:value="lh"
+            android:name="UMENG_CHANNEL" />
+
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService"></service>
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
     </application>
 
 </manifest>

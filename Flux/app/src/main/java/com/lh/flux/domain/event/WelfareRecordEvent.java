@@ -1,27 +1,28 @@
 package com.lh.flux.domain.event;
-import com.lh.flux.model.entity.*;
+
+import com.lh.flux.model.entity.WelfareRecordEntity;
 
 public class WelfareRecordEvent
 {
-	private WelfareRecordEntity data;
+    private WelfareRecordEntity data;
 
-	public WelfareRecordEvent(WelfareRecordEntity data)
-	{
-		this.data = data;
-	}
+    public WelfareRecordEvent(WelfareRecordEntity data)
+    {
+        this.data = data;
+    }
 
-	public void setData(WelfareRecordEntity data)
-	{
-		this.data = data;
-	}
+    public void setData(WelfareRecordEntity data)
+    {
+        this.data = data;
+    }
 
-	public WelfareRecordEntity getData()
-	{
-		return data;
-	}
-	
-	public boolean isSuccess()
-	{
-		return data!=null;
-	}
+    public WelfareRecordEntity getData()
+    {
+        return data;
+    }
+
+    public boolean isSuccess()
+    {
+        return data != null;
+    }
 }

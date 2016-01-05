@@ -1,9 +1,12 @@
 package com.lh.flux.model.api;
-import com.lh.flux.model.entity.*;
+
+import com.lh.flux.model.entity.User;
 
 public interface WelfareApi
 {
-	public String getWelfareStatus(User u)
-	public String getWelfareCookie(User u)
-	public String grabWelfare(User u)
+    String getWelfareStatus(User u);
+
+    String getWelfareCookie(User u);
+
+    String grabWelfare(User u);
 }

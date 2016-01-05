@@ -1,7 +1,8 @@
 package com.lh.flux.model.api;
-import com.lh.flux.model.entity.*;
+
+import com.lh.flux.model.entity.User;
 
 public interface WelfareRecordApi
 {
-	public String getWelfareRecord(User u)
+    String getWelfareRecord(User u);
 }

@@ -3,5 +3,10 @@
 
     <string name="app_name">Flux</string>
     <string name="hello_world">Hello world!</string>
+    <string name="phone">电话:</string>
+    <string name="logining">状态:正在登录</string>
+    <string name="login_already">状态:已登录</string>
+    <string name="login_fail">状态:登录失败</string>
+    <string name="current_status">当前状态:</string>
 
 </resources>

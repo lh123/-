@@ -2,137 +2,137 @@ package com.lh.flux.model.entity;
 
 public class User
 {
-	private String phone;
-	private String sessionID;
-	private String token;
-	private int totalFlux=-1;
-	private int availableFlux=-1;
-	private String cookie;
-	private String imei;
-	private String imsi;
-	private String manufacturer;
-	private String mode;
-	private int sdk;
-	
-	private boolean isLogin=false;
+    private String phone;
+    private String sessionID;
+    private String token;
+    private int totalFlux = -1;
+    private int availableFlux = -1;
+    private String cookie;
+    private String imei;
+    private String imsi;
+    private String manufacturer;
+    private String mode;
+    private int sdk;
 
-	public void setIsLogin(boolean isLogin)
-	{
-		this.isLogin = isLogin;
-	}
+    private boolean isLogin = false;
 
-	public boolean isLogin()
-	{
-		return isLogin;
-	}
+    public void setIsLogin(boolean isLogin)
+    {
+        this.isLogin = isLogin;
+    }
 
-	public void setPhone(String phone)
-	{
-		this.phone = phone;
-	}
+    public boolean isLogin()
+    {
+        return isLogin;
+    }
 
-	public String getPhone()
-	{
-		return phone;
-	}
+    public void setPhone(String phone)
+    {
+        this.phone = phone;
+    }
 
-	public void setSessionID(String sessionID)
-	{
-		this.sessionID = sessionID;
-	}
+    public String getPhone()
+    {
+        return phone;
+    }
 
-	public String getSessionID()
-	{
-		return sessionID;
-	}
+    public void setSessionID(String sessionID)
+    {
+        this.sessionID = sessionID;
+    }
 
-	public void setToken(String token)
-	{
-		this.token = token;
-	}
+    public String getSessionID()
+    {
+        return sessionID;
+    }
 
-	public String getToken()
-	{
-		return token;
-	}
+    public void setToken(String token)
+    {
+        this.token = token;
+    }
 
-	public void setTotalFlux(int totalFlux)
-	{
-		this.totalFlux = totalFlux;
-	}
+    public String getToken()
+    {
+        return token;
+    }
 
-	public int getTotalFlux()
-	{
-		return totalFlux;
-	}
+    public void setTotalFlux(int totalFlux)
+    {
+        this.totalFlux = totalFlux;
+    }
 
-	public void setAvailableFlux(int availableFlux)
-	{
-		this.availableFlux = availableFlux;
-	}
+    public int getTotalFlux()
+    {
+        return totalFlux;
+    }
 
-	public int getAvailableFlux()
-	{
-		return availableFlux;
-	}
+    public void setAvailableFlux(int availableFlux)
+    {
+        this.availableFlux = availableFlux;
+    }
 
-	public void setCookie(String cookie)
-	{
-		this.cookie = cookie;
-	}
+    public int getAvailableFlux()
+    {
+        return availableFlux;
+    }
 
-	public String getCookie()
-	{
-		return cookie;
-	}
+    public void setCookie(String cookie)
+    {
+        this.cookie = cookie;
+    }
 
-	public void setImei(String imei)
-	{
-		this.imei = imei;
-	}
+    public String getCookie()
+    {
+        return cookie;
+    }
 
-	public String getImei()
-	{
-		return imei;
-	}
+    public void setImei(String imei)
+    {
+        this.imei = imei;
+    }
 
-	public void setImsi(String imsi)
-	{
-		this.imsi = imsi;
-	}
+    public String getImei()
+    {
+        return imei;
+    }
 
-	public String getImsi()
-	{
-		return imsi;
-	}
+    public void setImsi(String imsi)
+    {
+        this.imsi = imsi;
+    }
 
-	public void setManufacturer(String manufacturer)
-	{
-		this.manufacturer = manufacturer;
-	}
+    public String getImsi()
+    {
+        return imsi;
+    }
 
-	public String getManufacturer()
-	{
-		return manufacturer;
-	}
+    public void setManufacturer(String manufacturer)
+    {
+        this.manufacturer = manufacturer;
+    }
 
-	public void setMode(String mode)
-	{
-		this.mode = mode;
-	}
+    public String getManufacturer()
+    {
+        return manufacturer;
+    }
 
-	public String getMode()
-	{
-		return mode;
-	}
+    public void setMode(String mode)
+    {
+        this.mode = mode;
+    }
 
-	public void setSdk(int sdk)
-	{
-		this.sdk = sdk;
-	}
+    public String getMode()
+    {
+        return mode;
+    }
 
-	public int getSdk()
-	{
-		return sdk;
-	}
+    public void setSdk(int sdk)
+    {
+        this.sdk = sdk;
+    }
+
+    public int getSdk()
+    {
+        return sdk;
+    }
 }

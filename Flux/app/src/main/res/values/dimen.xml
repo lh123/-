@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<dimen name="buttonHeight">36dp</dimen>
-	<dimen name="marginEdge">4dp</dimen>
-	<dimen name="dialogEdge">8dp</dimen>
-	<dimen name="dialogWidth">300dp</dimen>
+    <dimen name="buttonHeight">36dp</dimen>
+    <dimen name="marginEdge">4dp</dimen>
+    <dimen name="dialogEdge">8dp</dimen>
+    <dimen name="dialogWidth">300dp</dimen>
 </resources>
